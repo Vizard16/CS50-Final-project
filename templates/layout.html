@@ -35,19 +35,19 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     {% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/pedidos">Pedidos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/release">Capturar</a></li>
                             <li class="nav-item"><a class="nav-link" href="/buy">Buy</a></li>
                             <li class="nav-item"><a class="nav-link" href="/sell">Sell</a></li>
                             <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
                             
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/logout">Cerrar Sesión</a></li>
                         </ul>
                     {% else %}
                         <ul class="navbar-nav ms-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/register">Registrarse</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/login">Acceder</a></li>
                         </ul>
                     {% endif %}
                 </div>
@@ -73,5 +73,10 @@
         </footer>
 
     </body>
+    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    
+
 
 </html>
