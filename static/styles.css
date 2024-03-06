@@ -2,13 +2,13 @@
 nav .navbar-brand
 {
     font-size: xx-large;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Verdana', Monospace;
 }
 
 /* Font type for navigation links */
 nav .navbar-nav .nav-item .nav-link {
     font-size: large; /* Change this value to adjust the font size */
-    font-family: 'YourCustomFont', sans-serif; /* Replace 'YourCustomFont' with the actual font name */
+    font-family: 'Arial', sans-serif; /* Replace 'YourCustomFont' with the actual font name */
 }
 
 /* Colors for brand */
@@ -29,6 +29,14 @@ nav .navbar-brand .green
     color: #2e944b;
 }
 
+/* Modify the background color */
+.bg-custom {
+    background-color: #559cf4;
+}
+
+.bg-custom-dark {
+    background-color: #426CEB;
+}
 
 .table tfoot {
     border-top: none;
