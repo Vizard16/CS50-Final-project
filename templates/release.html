@@ -6,8 +6,12 @@
 
 {% block main %}
 
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
 <form method="post" action="/release" class="form-inline">
-    <div class="row">
+    <div class="row" id="container">
         <!-- Label and Date Input Column -->
         <div class="col-sm-3">
             <label for="startDate">Fecha</label>
@@ -87,86 +91,73 @@
     </div>
 
     <div class="col-sm-6 mb-3 mt-5">
-        <h3>Colores de Batas</h3>
+        <h3>Batas</h3>
+    </div>
+<!--Add a button that dublicates the following so I can have more to add-->
+    <div class="row mt-3" id="cloneableSection"> 
+        <div class="col-sm-2">
+            <label for="startDate">Cantidad</label>
+            <input class="form-control" type="number"/>
+        </div>
+
+        <div class="col-sm-2">
+            <label for="additionalInput">Color</label>
+            <select class="form-select" aria-label="Default select example">
+                <option>Gris Perla</option>
+                <option>Rosa</option>
+                <option>Azul Celeste</option>
+                <option>Azul Rey</option>
+                <option>Amarillo</option>
+                <option>Beige</option>
+                <option>Blanco</option>
+                <option>Cafe</option>
+                <option>Rojo</option>
+                <option>Gris Oxford</option>
+                <option>Azul Marino</option>
+                <option>Negro</option>
+            </select>
+        </div>
+
+        <div class="col-sm-2">
+            <label for="additionalInput">Talla</label>
+            <select class="form-select" aria-label="Default select example">
+                <option>XS</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+                <option>2XL</option>
+                <option>3XL</option>
+                <option>4XL</option>
+                <option>5XL</option>
+                <option>6XL</option>
+            </select>
+        </div>
     </div>
 
-    <div class="row mt-3"> 
+    <div id="cloneableSectionContainer"></div>
+    
+    <!-- Button to add more sections -->
+    <!-- Button to clone the section -->
+    <button type="button" class="btn btn-success mt-3" id="cloneSectionButton">Clone Section</button>
+
+    <!-- XS	S	M	L	XL	2XL	3XL	4XL	5XL	6XL -->
+    
         
-        <div class="col-sm-1">
-            <label for="startDate">Gris Perla</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Rosa</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Azul Celeste</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Azul Rey</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Amarillo</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Beige</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-    </div>
-
-    <div class="row mt-3"> 
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Blanco</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Cafe</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Rojo</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Gris Oxford</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Azul Marino</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-        <div class="col-sm-1">
-            <label for="additionalInput">Negro</label>
-            <input id="additionalInput" class="form-control" type="number" />
-        </div>
-
-    </div>
-        
-    </div>
-
-
-
-
-
-
 </form>
 
 <button type="submit" class="btn btn-primary mt-3">Submit</button>
+
+<script>
+    $(document).ready(function() {
+        // Click event for the "Clone Section" button
+        $("#cloneSectionButton").click(function() {
+            // Clone only the desired section and append it to the container
+            var clonedSection = $("#cloneableSection").clone();
+            clonedSection.appendTo("#cloneableSectionContainer"); // Change "Container" to the actual container ID or class
+        });
+    });
+</script>
 
 
 
