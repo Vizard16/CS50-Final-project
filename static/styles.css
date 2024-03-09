@@ -2,7 +2,7 @@
 nav .navbar-brand
 {
     font-size: xx-large;
-    font-family: 'Verdana', Monospace;
+    font-family: 'Monaco', Monospace;
 }
 
 /* Font type for navigation links */
@@ -31,7 +31,7 @@ nav .navbar-brand .green
 
 /* Modify the background color */
 .bg-custom {
-    background-color: #559cf4;
+    background-color: #b9cadf;
 }
 
 .bg-custom-dark {
