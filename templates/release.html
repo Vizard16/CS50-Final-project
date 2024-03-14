@@ -9,100 +9,94 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
-
 <form method="post" action="/release" class="form-inline">
     <div class="row" id="container">
         <!-- Label and Date Input Column -->
         <div class="col-sm-3">
             <label for="startDate">Fecha</label>
-            <input id="startDate" class="form-control" type="date" />
+            <input id="startDate" class="form-control" type="date" name="fecha">
             <span id="startDateSelected"></span>
         </div>
 
         <!-- Select box Column -->
         <div class="col-sm-3">
-            <label for="startDate">Clave De Planta</label>
-            <select class="form-select" aria-label="Default select example">
-                <option>Mustard</option>
-                <option>Ketchup</option>
-                <option>Relish</option>
+            <label for="clave_planta">Clave De Planta</label>
+            <select class="form-select" aria-label="Default select example" name="clave_planta">
+                <option>0001</option>
+                <option>0002</option>
+                <option>0003</option>
             </select>
         </div>
 
         <div class="col-sm-3">
-            <label for="startDate">Estado</label>
-            <select class="form-select" aria-label="Default select example">
+            <label for="estado">Estado</label>
+            <select class="form-select" aria-label="Default select example" name="estado">
                 <option>Option 1</option>
                 <option>Option 2</option>
                 <option>Option 3</option>
             </select>
         </div>
         <div class="col-sm-3">
-            <label for="startDate">Ciudad</label>
-            <select class="form-select" aria-label="Default select example">
+            <label for="ciudad">Ciudad</label>
+            <select class="form-select" aria-label="Default select example" name="ciudad">
                 <option>Choice A</option>
                 <option>Choice B</option>
                 <option>Choice C</option>
             </select>
         </div>
-
     </div>
+
     <!-- Second Row -->
     <div class="row mt-3">
-
         <div class="col-sm-3">
-            <label for="additionalInput">Municipio</label>
-            <input id="additionalInput" class="form-control" type="text" />
+            <label for="municipio">Municipio</label>
+            <input id="municipio" class="form-control" type="text" name="municipio">
         </div>
         
         <div class="col-sm-3">
-            <label for="additionalInput">Codigo Postal</label>
-            <input id="additionalInput" class="form-control" type="text" />
+            <label for="codigo_postal">Codigo Postal</label>
+            <input id="codigo_postal" class="form-control" type="text" name="codigo_postal">
         </div>
 
         <div class="col-sm-3">
-            <label for="additionalInput">Telefono de Contacto</label>
-            <input id="additionalInput" class="form-control" type="text" />
+            <label for="telefono_contacto">Telefono de Contacto</label>
+            <input id="telefono_contacto" class="form-control" type="text" name="telefono_contacto">
         </div>
 
         <div class="col-sm-3">
-            <label for="additionalInput">Nombre de Contacto</label>
-            <input id="additionalInput" class="form-control" type="text" />
+            <label for="nombre_contacto">Nombre de Contacto</label>
+            <input id="nombre_contacto" class="form-control" type="text" name="nombre_contacto">
         </div>
-
-        <!-- Me falta lo de las piezas de Batas o Mandil Aqui-->
-        
     </div>
 
     <div class="row mt-3">
         <div class="col-sm-3">
-            <label for="startDate">Productos</label>
-            <select class="form-select" aria-label="Default select example">
+            <label for="productos">Productos</label>
+            <select class="form-select" aria-label="Default select example" name="productos">
                 <option>Batas</option>
-                
             </select>
         </div>
 
         <div class="col-sm-3">
-            <label for="additionalInput">Total de Prendas</label>
-            <input id="additionalInput" class="form-control" type="number" />
+            <label for="total_prendas">Total de Prendas</label>
+            <input id="total_prendas" class="form-control" type="number" name="total_prendas">
         </div>
-
     </div>
 
     <div class="col-sm-6 mb-3 mt-5">
         <h3>Batas</h3>
     </div>
-<!--Add a button that dublicates the following so I can have more to add-->
+
+    <!--Add a button that duplicates the following so I can have more to add-->
     <div class="row mt-3" id="cloneableSection"> 
         <div class="col-sm-2">
-            <label for="startDate">Cantidad</label>
-            <input class="form-control" type="number"/>
+            <label for="cantidad">Cantidad</label>
+            <input class="form-control" type="number" name="cantidad">
         </div>
 
         <div class="col-sm-2">
-            <label for="additionalInput">Color</label>
-            <select class="form-select" aria-label="Default select example">
+            <label for="color">Color</label>
+            <select class="form-select" aria-label="Default select example" name="color">
                 <option>Gris Perla</option>
                 <option>Rosa</option>
                 <option>Azul Celeste</option>
@@ -119,8 +113,8 @@
         </div>
 
         <div class="col-sm-2">
-            <label for="additionalInput">Talla</label>
-            <select class="form-select" aria-label="Default select example">
+            <label for="talla">Talla</label>
+            <select class="form-select" aria-label="Default select example" name="talla">
                 <option>XS</option>
                 <option>S</option>
                 <option>M</option>
@@ -137,16 +131,16 @@
 
     <div id="cloneableSectionContainer"></div>
     
-    <!-- Button to add more sections -->
-    <!-- Button to clone the section -->
-    <button type="button" class="btn btn-success mt-3" id="cloneSectionButton">Clone Section</button>
-
-    <!-- XS	S	M	L	XL	2XL	3XL	4XL	5XL	6XL -->
-    
-        
+     Button to add more sections 
+    <button type="button" class="btn btn-success mt-3" id="cloneSectionButton">Clone Section</button> 
+                    
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
 </form>
 
-<button type="submit" class="btn btn-primary mt-3">Submit</button>
+
+
+
 
 <script>
     $(document).ready(function() {
