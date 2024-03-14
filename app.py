@@ -130,6 +130,14 @@ def register():
 
     else:
         return render_template("register.html")
+
+@app.route("/logout")
+def logout():
+    # Clear session
+    session.clear()
+
+    # redirect
+    return redirect("/")
     
 @app.route("/release", methods=["GET", "POST"])
 def release():
