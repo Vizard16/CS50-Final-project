@@ -1,1 +1,48 @@
-<!---AQUI VAN PRUEBAAAAS-->
+Prueba de colores no jalo
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+
+{% block main %}
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th rowspan="2">Color</th>
+                <th colspan="10">Size</th>
+            </tr>
+            <tr>
+                <th>&nbsp;</th>
+                <th>XS</th>
+                <th>S</th>
+                <th>M</th>
+                <th>L</th>
+                <th>XL</th>
+                <th>2XL</th>
+                <th>3XL</th>
+                <th>4XL</th>
+                <th>5XL</th>
+                <th>6XL</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for color, sizes in color_quantities.items() %}
+            <tr>
+                <td>{{ id }}</td>
+                <td>{{ color }}</td>
+                {% for size in ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'] %}
+                <td>{{ sizes.get(size, 0) }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  
+{% endblock %}
+
+
