@@ -1,6 +1,5 @@
 import os
 
-
 from cs50 import SQL
 from flask import Flask, session, request, flash, redirect, render_template
 from flask_session import Session
@@ -112,9 +111,30 @@ def register():
     else:
         return render_template("register.html")
     
-@app.route("/release", methods =["GET", "POST"])
+@app.route("/release", methods=["GET", "POST"])
 def release():
+    if request.method == "POST":
+        # Extract form data
+        fecha = request.form.get("fecha")
+        planta_key = request.form.get("clave_planta")
+        ciudad = request.form.get("ciudad")
+        municipio = request.form.get("municipio")
+        estado = request.form.get("estado")
+        codigo_postal = request.form.get("codigo_postal")
+        telefono_contacto = request.form.get("telefono_contacto")
+        nombre_contacto = request.form.get("nombre_contacto")
+        prendas_solicitadas = request.form.get("total_prendas")
 
-    
-    return render_template("release.html")
+        # Ensure all required fields are provided
+        if not (fecha and planta_key and ciudad and municipio and estado and codigo_postal and telefono_contacto and nombre_contacto and prendas_solicitadas):
+            return "All fields are required", 400
 
+        # Insert data into the 'textile_releases' table
+        db.execute("INSERT INTO textile_releases (fecha, planta_key, ciudad, municipio_estado, codigo_postal, telefono_contacto, nombre_contacto, prendas_solicitadas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                   fecha, planta_key,  ciudad, f"{municipio}, {estado}", codigo_postal, telefono_contacto, nombre_contacto, prendas_solicitadas)
+
+        # Redirect to a success page or wherever you want after insertion
+        return redirect("/")
+    else:
+        # For GET requests, render the release.html template
+        return render_template("release.html")
