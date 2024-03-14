@@ -29,8 +29,28 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
+    '''
+    # Fetch color quantities data from the database
+    color_quantities = db.execute("SELECT textile_release_id, color, size, total_quantity FROM color_quantities")
 
-    return render_template("index.html")
+    # Organize data into a nested dictionary
+    color_quantity_dict = {}
+    for row in color_quantities:
+        id = row['textile_release_id']
+        color = row['color']
+        size = row['size']
+        quantity = row['total_quantity']
+        if color not in color_quantity_dict:
+            color_quantity_dict[color] = {}
+        color_quantity_dict[color][size] = quantity
+
+    return render_template("index.html", color_quantities=color_quantity_dict, id=id)
+
+    '''
+    releases = db.execute("SELECT * FROM textile_releases")
+
+    return render_template("index.html", releases=releases)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
