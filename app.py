@@ -140,6 +140,7 @@ def logout():
     return redirect("/")
     
 @app.route("/release", methods=["GET", "POST"])
+@login_required
 def release():
     if request.method == "POST":
         # Extract form data
@@ -153,13 +154,36 @@ def release():
         nombre_contacto = request.form.get("nombre_contacto")
         prendas_solicitadas = request.form.get("total_prendas")
 
-        # Ensure all required fields are provided
-        if not (fecha and planta_key and ciudad and municipio and estado and codigo_postal and telefono_contacto and nombre_contacto and prendas_solicitadas):
-            return "All fields are required", 400
+        cantidad = request.form.getlist("cantidad")
+        color = request.form.getlist("color")
+        talla = request.form.getlist("talla")
+
+      
+        
+    
 
         # Insert data into the 'textile_releases' table
         db.execute("INSERT INTO textile_releases (fecha, planta_key, ciudad, municipio_estado, codigo_postal, telefono_contacto, nombre_contacto, prendas_solicitadas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                    fecha, planta_key,  ciudad, f"{municipio}, {estado}", codigo_postal, telefono_contacto, nombre_contacto, prendas_solicitadas)
+        
+
+        new_release_id = db.execute("SELECT id FROM textile_releases ORDER BY id DESC LIMIT 1")
+        new_release_id2 = new_release_id[0]['id']
+
+        for c, t, q in zip(color, talla, cantidad):
+            db.execute("INSERT INTO color_quantities (textile_release_id, color, size, total_quantity) VALUES (?, ?, ?, ?)",
+                       new_release_id2, c, t, q)
+        # Insert the data into the color_quantities table
+        #db.execute("INSERT INTO color_quantities (textile_release_id, color, size, total_quantity) VALUES (?, ?, ?, ?)",
+                   #new_release_id2, color, talla, cantidad)
+        
+
+
+        # Ensure all required fields are provided
+        if not (fecha and planta_key and ciudad and municipio and estado and codigo_postal and telefono_contacto and nombre_contacto and prendas_solicitadas and cantidad and color and talla):
+            return "All fields are required", 400
+
+        
 
         # Redirect to a success page or wherever you want after insertion
         return redirect("/")
