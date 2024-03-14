@@ -1,14 +1,53 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Home
+    Textile Releases
 {% endblock %}
-
 
 {% block main %}
 
-    <table>
-        <th>hola</th>
+    <div class="bg-custom">
+        <h3 style="color: white">Welcome Back!</h3>
+    </div>
+
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Planta Key</th>
+                <th scope="col">Domicilio</th>
+                <th scope="col">Ciudad</th>
+                <th scope="col">Municipio/Estado</th>
+                <th scope="col">Código Postal</th>
+                <th scope="col">Teléfono de Contacto</th>
+                <th scope="col">Nombre de Contacto</th>
+                <th scope="col" >Prendas Solicitadas</th>
+                <th scope="col">Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for release in releases %}
+                <tr>
+                    <td>{{ release.id }}</td>
+                    <td>{{ release.planta_key }}</td>
+                    <td>{{ release.domicilio }}</td>
+                    <td>{{ release.ciudad }}</td>
+                    <td>{{ release.municipio_estado }}</td>
+                    <td>{{ release.codigo_postal }}</td>
+                    <td>{{ release.telefono_contacto }}</td>
+                    <td>{{ release.nombre_contacto }}</td>
+                    <td>{{ release.prendas_solicitadas }}</td>
+                    <td>{{ release.fecha }}</td>
+
+                    <td>
+                        <select class="form-select" name="status">
+                            <option value="in_progress">In Progress</option>
+                            <option value="delivered">Delivered</option>
+                        </select>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
 {% endblock %}
