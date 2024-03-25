@@ -37,9 +37,23 @@
                 <div class="collapse navbar-collapse" id="navbar">
                     {% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/release">Capturar</a></li>
-                            
-                            
+                            <li class="nav-item {% if request.path == '/release' %}active{% endif %}">
+                                <a class="nav-link" href="/release">Capturar</a>
+                            </li>
+                            <li class="nav-item {% if request.path == '/colors' %}active{% endif %}">
+                                <a class="nav-link" href="/colors">Colores</a>
+                            </li>
+                            <li class="nav-item {% if request.path == '/search_colors' %}active{% endif %}">
+                                <a class="nav-link" href="/search_colors">Buscar Colores</a>
+                            </li>
+                            <li class="nav-item dropdown {% if request.path in ['/search_date', '/search_name', '/search_id'] %}active{% endif %}">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><strong>Buscar Release</strong></a>
+                                <ul class="dropdown-menu bg-custom">
+                                    <li class="dropdown-item"><a style="color:rgb(54, 54, 54)" href="/search_date"><strong>Por Fecha</strong></a></li>
+                                    <li class="dropdown-item"><a style="color:rgb(54, 54, 54)" href="/search_name"><strong>Por Nombre</strong></a></li>
+                                    <li class="dropdown-item"><a style="color:rgb(54, 54, 54)" href="/search_id"><strong>Por ID</strong></a></li>
+                                </ul>
+                            </li>
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="/logout">Cerrar Sesión</a></li>
@@ -51,6 +65,7 @@
                         </ul>
                     {% endif %}
                 </div>
+                
             </div>
         </nav>
 
