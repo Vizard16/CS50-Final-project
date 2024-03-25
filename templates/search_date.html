@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search By Date
+{% endblock %}
+
+{% block main %}
+
+<h3 style="color:#426CEB"><strong><em>Inserta Fecha</em></strong></h3>
+<p></p>
+
+<input autocomplete="off" autofocus placeholder="Release Date" type="date" max="3000-01-01" onfocus="this.max=new Date().toISOString().split('T')[0]" />
+
+<table class="table table-hover table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col"> Textile Release ID</th>
+            <th scope="col"> Planta Key</th>
+            <th scope="col"> Domicilio</th>
+            <th scope="col"> Ciudad</th>
+            <th scope="col"> Municipio/Estado</th>
+            <th scope="col"> Código Postal</th>
+            <th scope="col"> Teléfono de Contacto</th>
+            <th scope="col"> Nombre de Contacto</th>
+            <th scope="col"> Prendas Solicitadas</th>
+            <th scope="col"> Fecha</th>
+        </tr>
+    </thead>
+    <tbody id="body"></tbody>
+</table>
+<script>
+    let input = document.querySelector('input');
+    input.addEventListener('input', async function() {
+        let response = await fetch('/search_date/search?q=' + input.value);
+        let answers = await response.json();
+        let html = '';
+        for (let i in answers) {
+            html += '<tr>';
+            let releaseId = String(answers[i].id);
+            html += '<td>' + releaseId + '</td>';
+            let plantaKey = typeof answers[i].planta_key === 'string' ? answers[i].planta_key.replace('<', '&lt;').replace('&', '&amp;') : '';
+            html += '<td>' + plantaKey + '</td>';
+            let domicilio = answers[i].domicilio;
+            html += '<td>' + (domicilio ? domicilio : '') + '</td>';
+            let ciudad = typeof answers[i].ciudad === 'string' ? answers[i].ciudad.replace('<', '&lt;').replace('&', '&amp;') : '';
+            html += '<td>' + ciudad + '</td>';
+            let municipioEstado = typeof answers[i].municipio_estado === 'string' ? answers[i].municipio_estado.replace('<', '&lt;').replace('&', '&amp;') : '';
+            html += '<td>' + municipioEstado + '</td>';
+            let codigoPostal = typeof answers[i].codigo_postal === 'string' ? answers[i].codigo_postal.replace('<', '&lt;').replace('&', '&amp;') : '';
+            html += '<td>' + codigoPostal + '</td>';
+            let telefonoContacto = typeof answers[i].telefono_contacto === 'string' ? answers[i].telefono_contacto.replace('<', '&lt;').replace('&', '&amp;') : '';
+            html += '<td>' + telefonoContacto + '</td>';
+            let nombreContacto = typeof answers[i].nombre_contacto === 'string' ? answers[i].nombre_contacto.replace('<', '&lt;').replace('&', '&amp;') : '';
+            html += '<td>' + nombreContacto + '</td>';
+            let prendasSolicitadas = answers[i].prendas_solicitadas;
+            html += '<td>' + prendasSolicitadas + '</td>';
+            let fecha = typeof answers[i].fecha === 'string' ? answers[i].fecha.replace('<', '&lt;').replace('&', '&amp;') : '';
+            html += '<td>' + fecha + '</td>';
+            html += '</tr>';
+        }
+        document.querySelector('tbody').innerHTML = html;
+    });
+</script>
+
+{% endblock %}
