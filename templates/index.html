@@ -6,6 +6,7 @@
 
 {% block main %}
 
+
     <div class="bg-custom">
         <h3 style="color: white">Welcome Back!</h3>
     </div>
@@ -25,10 +26,10 @@
                 <th scope="col">Fecha</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody >
             {% for release in releases %}
                 <tr>
-                    <td>{{ release.id }}</td>
+                    <td >{{ release.id }}</td>
                     <td>{{ release.planta_key }}</td>
                     <td>{{ release.domicilio }}</td>
                     <td>{{ release.ciudad }}</td>
@@ -40,14 +41,59 @@
                     <td>{{ release.fecha }}</td>
 
                     <td>
-                        <select class="form-select" name="status">
-                            <option value="in_progress">In Progress</option>
-                            <option value="delivered">Delivered</option>
+                        <select class="form-select form-selector" id="status-{{ release.id }}" name="{{ release.id }}">
+                            <option value="in_progress" {% if release.status == 'in_progress' %} selected {% endif %}>In Progress</option>
+                            <option value="delivered" {% if release.status == 'delivered' %} selected {% endif %}>Delivered</option>
                         </select>
                     </td>
+                    
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Add change event listener to all select elements with class 'form-selector'
+            $('.form-selector').change(function() {
+                // Get the selected option value
+                var selectedValue = $(this).val();
+    
+                // Get the ID of the select element
+                var releaseId = $(this).attr('id').split('-')[1]; // Extract release ID from the ID attribute
+    
+                // Select the select element by ID
+                var selectElement = $('#status-' + releaseId);
+    
+                // Remove previous color classes
+                selectElement.removeClass('bg-progress bg-success');
+    
+                // Add appropriate color class based on selected value
+                if (selectedValue === 'in_progress') {
+                    selectElement.addClass('bg-progress');
+                } else if (selectedValue === 'delivered') {
+                    selectElement.addClass('bg-success');
+                }
+    
+                // Update the status in the database
+                $.ajax({
+                    url: '/update_status', // Change this to the route that updates the status
+                    type: 'POST',
+                    data: { release_id: releaseId, status: selectedValue },
+                    success: function(response) {
+                        // Handle success response
+                        console.log('Status updated successfully');
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response
+                        console.error('Error updating status:', error);
+                    }
+                });
+            });
+        });
+    </script>
+
 
 {% endblock %}
