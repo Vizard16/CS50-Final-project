@@ -11,6 +11,17 @@ nav .navbar-nav .nav-item .nav-link {
     font-family: 'Arial', sans-serif; /* Replace 'YourCustomFont' with the actual font name */
 }
 
+/* Change hover color for navigation links */
+nav .navbar-nav .nav-item .nav-link:hover {
+    color: #286d8d; /* Change this to your preferred hover color */
+}
+
+/* Active link styles */
+.navbar-nav .nav-item.active > .nav-link {
+    color: #ffffff; /* Active link text color */
+    background-color: #007bff; /* Active link background color */
+    border-radius: 5px; /* Border radius for active link */
+}
 /* Colors for brand */
 nav .navbar-brand .blue
 {
@@ -34,6 +45,7 @@ nav .navbar-brand .green
     background-color: #b9cadf;
 }
 
+
 .bg-custom-dark {
     background-color: #426CEB;
 }
@@ -42,3 +54,20 @@ nav .navbar-brand .green
     border-top: none;
 }
 
+.bg-progress {
+    background-color: rgb(18, 73, 202); /* Change this to your preferred color */
+    color: white; /* Text color */
+}
+
+.bg-success {
+    background-color: green; /* Change this to your preferred color */
+    color: white; /* Text color */
+}
+
+.Rosa  {
+    background-color: rgb(243, 132, 160);
+}
+
+.Azul_Marino {
+    background-color: blue; /* Example color for "Azul Marino" */
+  }
