@@ -1,11 +1,13 @@
 import os
 
 from cs50 import SQL
-from flask import Flask, session, request, flash, redirect, render_template
+from flask import Flask, session, request, jsonify, flash, redirect, render_template
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import login_required, apology
+
+import datetime
 
 # Configure application
 app = Flask(__name__)
@@ -18,38 +20,60 @@ Session(app)
 db = SQL("sqlite:///textil.db")
 
 
+
 @app.after_request
 def after_request(response):
     """Ensure responses aren't cached"""
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
     response.headers["Expires"] = 0
     response.headers["Pragma"] = "no-cache"
+    
     return response
 
 @app.route("/")
 @login_required
 def index():
-    '''
+    # Fetch textile releases data from the database
+    releases = db.execute("SELECT * FROM textile_releases")
+
+    return render_template("index.html", releases=releases)
+    
+# Route to handle status updates
+@app.route("/update_status", methods=["POST"])
+def update_status():
+    # Extract release ID and status from the POST request
+    release_id = request.form.get("release_id")
+    status = request.form.get("status")
+
+    # Update status in the database
+    db.execute("UPDATE textile_releases SET status = ? WHERE id = ?", status, release_id)
+
+    # Optionally provide a response
+    return "Status updated successfully"
+
+
+@app.route("/colors", methods=["GET", "POST"])
+@login_required
+def colors():
     # Fetch color quantities data from the database
     color_quantities = db.execute("SELECT textile_release_id, color, size, total_quantity FROM color_quantities")
 
     # Organize data into a nested dictionary
     color_quantity_dict = {}
     for row in color_quantities:
-        id = row['textile_release_id']
+        textile_release_id = row['textile_release_id']
         color = row['color']
         size = row['size']
         quantity = row['total_quantity']
-        if color not in color_quantity_dict:
-            color_quantity_dict[color] = {}
-        color_quantity_dict[color][size] = quantity
+        if textile_release_id not in color_quantity_dict:
+            color_quantity_dict[textile_release_id] = {}
+        if color not in color_quantity_dict[textile_release_id]:
+            color_quantity_dict[textile_release_id][color] = {}
+        color_quantity_dict[textile_release_id][color][size] = quantity
 
-    return render_template("index.html", color_quantities=color_quantity_dict, id=id)
+    return render_template("colors.html", color_quantities=color_quantity_dict)
 
-    '''
-    releases = db.execute("SELECT * FROM textile_releases")
-
-    return render_template("index.html", releases=releases)
+    
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -61,12 +85,24 @@ def login():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
         # Ensure username was submitted
-        if not request.form.get("username"):
-            return apology("must provide username", 403)
+
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if not username:
+            flash("You must insert username")
+            return (redirect("/login"))
 
         # Ensure password was submitted
-        elif not request.form.get("password"):
-            return apology("must provide password", 403)
+        elif not password:
+            flash("You must insert password")
+            return (redirect("/login"))
+        
+
+        if not username or not password:
+            flash("You must insert password AND username")
+            return (redirect("/login"))
 
         # Query database for username
         rows = db.execute(
@@ -77,7 +113,8 @@ def login():
         if len(rows) != 1 or not check_password_hash(
             rows[0]["hash"], request.form.get("password")
         ):
-            return apology("invalid username and/or password", 403)
+            flash("invalid username and/or password")
+            return (redirect("/login"))
 
         # Remember which user has logged in
         session["user_id"] = rows[0]["id"]
@@ -95,18 +132,29 @@ def register():
 
     if request.method == "POST":
 
-        if not request.form.get("username"):
-            return apology("must provide username", 400)
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        if not username:
+            flash("You must insert username")
+            return (redirect("/register"))
 
         # Ensure password was submitted
-        elif not request.form.get("password"):
-            return apology("must provide password", 400)
+        elif not password:
+            flash("You must insert password")
+            return (redirect("/register"))
 
-        elif request.form.get("password") != request.form.get("confirmation"):
-            return apology("password does not match", 400)
+        elif password != confirmation:
+            flash("password does not match")
+            return (redirect("/register"))
+            
+        
 
-        elif not request.form.get("confirmation"):
-            return apology("no matching password", 400)
+        elif not confirmation:
+            flash("no matching password")
+            return (redirect("/register"))
 
         hashed_password = generate_password_hash(request.form.get("password"))
 
@@ -117,7 +165,8 @@ def register():
         )
 
         if not result:
-            return apology("username already exist", 400)
+            flash("Username already in existence")
+            return redirect("/register")
 
         # Log the user in automatically after registration
         session["user_id"] = result
@@ -163,8 +212,9 @@ def release():
     
 
         # Insert data into the 'textile_releases' table
-        db.execute("INSERT INTO textile_releases (fecha, planta_key, ciudad, municipio_estado, codigo_postal, telefono_contacto, nombre_contacto, prendas_solicitadas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                   fecha, planta_key,  ciudad, f"{municipio}, {estado}", codigo_postal, telefono_contacto, nombre_contacto, prendas_solicitadas)
+        db.execute("INSERT INTO textile_releases (fecha, planta_key, ciudad, municipio_estado, codigo_postal, telefono_contacto, nombre_contacto, prendas_solicitadas, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                   fecha, planta_key, ciudad, f"{municipio}, {estado}", codigo_postal, telefono_contacto, nombre_contacto, prendas_solicitadas, 'in progress')
+
         
 
         new_release_id = db.execute("SELECT id FROM textile_releases ORDER BY id DESC LIMIT 1")
@@ -181,8 +231,8 @@ def release():
 
         # Ensure all required fields are provided
         if not (fecha and planta_key and ciudad and municipio and estado and codigo_postal and telefono_contacto and nombre_contacto and prendas_solicitadas and cantidad and color and talla):
-            return "All fields are required", 400
-
+            flash("All fields are required")
+            return redirect("/release")
         
 
         # Redirect to a success page or wherever you want after insertion
@@ -190,3 +240,87 @@ def release():
     else:
         # For GET requests, render the release.html template
         return render_template("release.html")
+
+
+@app.route("/search_date")
+@login_required
+# only render template
+def search_date():
+    today = datetime.datetime.now()
+    return render_template("search_date.html", today=today)
+
+
+
+@app.route("/search_date/search")
+def search_date2():
+    # Get the query parameter from the request
+    q = request.args.get("q")
+
+
+    # Check if the query parameter is present
+    if q:
+        try:
+            # Convert the query parameter to a datetime object
+            year, month, day = map(int, q.split('-'))
+            query_date = datetime.datetime(year, month, day)
+
+            # Query the database for the textile release data
+            results = db.execute("SELECT * FROM textile_releases WHERE fecha = ?", q)
+
+            # Return the results as JSON
+            return jsonify(results)
+        except ValueError:
+            # Return an error message if the date format is incorrect
+            return jsonify({"error": "Invalid date format. Please use YYYY-MM-DD."}), 400
+    else:
+        # Return an empty response if no query parameter is provided
+        return jsonify([])
+    
+
+@app.route("/search_name")
+# only render template
+@login_required
+def search_name():
+    return render_template("search_name.html")
+
+
+@app.route("/search_name/search")
+def search_name2():
+    # When input, return query as json so ir can be displayed dinamically
+    q = request.args.get("q")
+    if q:
+        results = db.execute("SELECT * FROM textile_releases WHERE nombre_contacto LIKE ?", f"%{q}%")
+    else:
+        results = []
+    return jsonify(results)
+
+@app.route("/search_id")
+@login_required
+def search_id():
+    return render_template("search_id.html")
+
+@app.route("/search_id/search")
+def search_id2():
+    q = request.args.get("q")
+    if q:
+        results = db.execute("SELECT * FROM textile_releases WHERE id LIKE ?",  f"%{q}%")
+    else:
+        results = []
+    return jsonify(results)
+
+@app.route("/search_colors")
+@login_required
+def search_colors():
+    return render_template("search_colors.html")
+
+@app.route("/search_colors/search")
+def search_colors2():
+    q = request.args.get("q")
+    if q:
+        results = db.execute("SELECT * FROM color_quantities WHERE textile_release_id LIKE ?", f"%{q}%")
+    else:
+        results = []
+    return jsonify(results)
+
+if __name__ == "__main__":
+    app.run(debug=True)
