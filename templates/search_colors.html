@@ -7,7 +7,7 @@
 
 {% block main %}
 
-<h3 style="color:#426CEB"><strong><em>Buscar Por ID de colores</em></strong></h3>
+<h3 style="color:#7d97e3"><strong><em>Buscar Por ID de colores</em></strong></h3>
 <p></p>
 
 <input autocomplete="off" autofocus placeholder="ID" type="text" size="40" width="20">
@@ -50,7 +50,7 @@
         let html = '';
         for (let key in sizes) {
             let [textile_release_id, color] = key.split('-');
-            html += `<tr>
+            html += `<tr class= "">
                         <td>${textile_release_id}</td>
                         <td>${color}</td>`;
             for (let size of ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL']) {
