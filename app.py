@@ -51,7 +51,35 @@ def update_status():
     # Optionally provide a response
     return "Status updated successfully"
 
+@app.route("/delete_release", methods=["POST"])
+@login_required
+def delete_release():
+    if request.method == "POST":
+        release_id = request.form.get("release_id")
 
+        # Check if release_id is provided
+        if not release_id:
+            return "Release ID is missing", 400
+
+        try:
+            # Delete related records from the color_quantities table
+            db.execute("DELETE FROM color_quantities WHERE textile_release_id = ?", release_id)
+
+            # Delete the release from the textile_releases table
+            db.execute("DELETE FROM textile_releases WHERE id = ?", release_id)
+
+            
+
+            return (redirect("/"))
+        except Exception as e:
+            # Log the error for debugging
+            app.logger.error(f"Error deleting release: {e}")
+            # Return a generic error message to the client
+            return "An error occurred while deleting the release", 500
+    else:
+        return "Invalid request method", 405
+
+    
 @app.route("/colors", methods=["GET", "POST"])
 @login_required
 def colors():
@@ -207,7 +235,10 @@ def release():
         color = request.form.getlist("color")
         talla = request.form.getlist("talla")
 
-      
+       # Ensure all required fields are provided
+        if not (fecha and planta_key and ciudad and municipio and estado and codigo_postal and telefono_contacto and nombre_contacto and prendas_solicitadas and cantidad and color and talla):
+            flash("All fields are required")
+            return redirect("/release")
         
     
 
@@ -226,14 +257,6 @@ def release():
         # Insert the data into the color_quantities table
         #db.execute("INSERT INTO color_quantities (textile_release_id, color, size, total_quantity) VALUES (?, ?, ?, ?)",
                    #new_release_id2, color, talla, cantidad)
-        
-
-
-        # Ensure all required fields are provided
-        if not (fecha and planta_key and ciudad and municipio and estado and codigo_postal and telefono_contacto and nombre_contacto and prendas_solicitadas and cantidad and color and talla):
-            flash("All fields are required")
-            return redirect("/release")
-        
 
         # Redirect to a success page or wherever you want after insertion
         return redirect("/")
@@ -241,6 +264,11 @@ def release():
         # For GET requests, render the release.html template
         return render_template("release.html")
 
+@app.route("/handle-alert", methods=["POST"])
+def handle_alert():
+    message = request.form.get("message")
+    flash(message)
+    return "Alert message sent to backend"
 
 @app.route("/search_date")
 @login_required
