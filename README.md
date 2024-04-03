@@ -25,7 +25,7 @@ The first thing I did was to create my database called `textil.db`. This is a Re
 
 The color_quantities table stores detailed records on the quantities of textiles by `color` and `size` for each release. Each record is uniquely identified by an `id` and links back to the textile_release_id.  
 
-Lastly the "users" table is used to register the users who have access to the system as well as their *hashed* passwords (which were created with a python function from the library **werkzeug.security**).
+Lastly the "users" table is used to register the users who have access to the system as well as their *hashed* passwords (which were created with a python function from the library *werkzeug.security*).
 
 Here is the diagram that explains how the tables are related as well as the attributes of each table:
 
@@ -33,8 +33,8 @@ Here is the diagram that explains how the tables are related as well as the attr
 
 Then, I created the `/templates` folder inside my project. Which was composed of all of the HTML files that were going to be accessed in each of my routes. `/templates` has 9 HTML files in total, each will be explained in the following segment: 
 
-- `layout.html`:
-
+- `layout.html`: This is the skeleton of the whole web application. It contains a ***NavBar*** with some *Jinja* logic that displays different elements in which the user can navigate. The *jinja* logic helps display **LogIn** and **Register** if the user is not logged in, and in case the user is logged in, it displays 6 options: **Logo, Capture, Colors, Search Color, Search Release** (which is a dropdown menu divided into Search by Date, by Name and by ID) and finally the **Log Out** option. This layout will be *extended* onto every other HTML file with *Jinja* so that only the body can be modified and every option can be accessed at all times. At the bottom I put a small footer that contains information of development of me. 
+![relational_model]()
 - `login.html`:
 
 - `register.html`:
