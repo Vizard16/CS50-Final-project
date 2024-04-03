@@ -46,6 +46,11 @@
                             <option value="delivered" {% if release.status == 'delivered' %} selected {% endif %}>Entregado</option>
                         </select>
                     </td>
+                    <td>
+                        <button class="btn btn-danger delete-btn" data-id="{{ release.id }}">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
