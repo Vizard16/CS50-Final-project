@@ -97,6 +97,7 @@
             <label for="total_prendas">Total de Prendas</label>
             <input id="total_prendas" class="form-control" type="number" name="total_prendas">
         </div>
+        
     </div>
 
     <div class="col-sm-6 mb-3 mt-5">
@@ -107,7 +108,7 @@
     <div class="row mt-3" id="cloneableSection"> 
         <div class="col-sm-2">
             <label for="cantidad">Cantidad</label>
-            <input class="form-control" type="number" name="cantidad" placeholder="Cantidad">
+            <input class="form-control cantidadInput" type="number" name="cantidad" placeholder="Cantidad" id ="cantidadInput">
         </div>
 
         <div class="col-sm-2">
@@ -145,13 +146,22 @@
         </div>
     </div>
 
+    
+
     <div id="cloneableSectionContainer"></div>
+
+    <div class="row mt-3">
+        <div class="col-sm-2">
+            <label>Total Cantidad:</label>
+            <span id="totalCantidad">0</span>
+        </div>
+    </div>
     
      <!--Button to add more sections -->
     <button type="button" class="btn btn-success mt-3" id="cloneSectionButton">+ prendas</button> 
                     
     <!-- Submit button -->
-    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    <button type="submit" class="btn btn-primary mt-3">Entregar</button>
 </form>
 
 
@@ -164,8 +174,39 @@
         $("#cloneSectionButton").click(function() {
             // Clone only the desired section and append it to the container
             var clonedSection = $("#cloneableSection").clone();
+            clonedSection.find('input[name="cantidad"]').val(''); // Clear the cloned cantidad input
             clonedSection.appendTo("#cloneableSectionContainer"); // Change "Container" to the actual container ID or class
         });
+        
+        // Update total cantidad when cantidad changes
+        $(document).on("input", ".cantidadInput", function() {
+            var totalCantidad = 0;
+            $(".cantidadInput").each(function() {
+                totalCantidad += parseInt($(this).val()) || 0; // Add the value to totalCantidad, use 0 if NaN
+            });
+            $("#totalCantidad").text(totalCantidad);
+            // Check if total cantidad matches total prendas
+            var totalPrendas = parseInt($("#total_prendas").val()) || 0; // Get the value of total prendas, use 0 if NaN
+            if (totalCantidad !== totalPrendas) {
+                // Send alert message to backend
+                $.ajax({
+                    type: "POST",
+                    url: "/handle-alert",
+                    data: {message: "La suma de cantidad de prendas no coincide con el total de prendas."},
+                    success: function(response) {
+                        // Handle success response if needed
+                        console.log(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response if needed
+                        console.error(error);
+                    }
+                });
+            }
+        });
+        
+        // Trigger input event on page load to calculate initial total cantidad
+        $(".cantidadInput").trigger("input");
     });
 </script>
 
