@@ -96,7 +96,36 @@
                     }
                 });
             });
+
+            // Add click event listener to all delete buttons with class 'delete-btn'
+            $('.delete-btn').click(function() {
+                // Get the ID of the release to delete from the data-id attribute
+                var releaseId = $(this).data('id');
+
+                // Confirm deletion with the user
+                if (confirm("Are you sure you want to delete this release?")) {
+                    // Perform AJAX request to delete the release
+                    $.ajax({
+                        url: '/delete_release', // Change this to the route that deletes the release
+                        type: 'POST',
+                        data: { release_id: releaseId },
+                        success: function(response) {
+                            // Handle success response
+                            console.log('Release deleted successfully');
+                            // Optionally, reload the page to reflect the changes
+                            window.location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error response
+                            console.error('Error deleting release:', error);
+                        }
+                    });
+                }
+            });
         });
+
+        
+    
     </script>
 
 
