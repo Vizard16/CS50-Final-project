@@ -16,7 +16,7 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Planta Key</th>
-                <th scope="col">Domicilio</th>
+                
                 <th scope="col">Ciudad</th>
                 <th scope="col">Municipio/Estado</th>
                 <th scope="col">Código Postal</th>
@@ -26,12 +26,12 @@
                 <th scope="col">Fecha</th>
             </tr>
         </thead>
-        <tbody >
+        <tbody class="table-group-divider">
             {% for release in releases %}
                 <tr>
                     <td >{{ release.id }}</td>
                     <td>{{ release.planta_key }}</td>
-                    <td>{{ release.domicilio }}</td>
+                    
                     <td>{{ release.ciudad }}</td>
                     <td>{{ release.municipio_estado }}</td>
                     <td>{{ release.codigo_postal }}</td>
@@ -42,11 +42,10 @@
 
                     <td>
                         <select class="form-select form-selector" id="status-{{ release.id }}" name="{{ release.id }}">
-                            <option value="in_progress" {% if release.status == 'in_progress' %} selected {% endif %}>In Progress</option>
-                            <option value="delivered" {% if release.status == 'delivered' %} selected {% endif %}>Delivered</option>
+                            <option value="in_progress" {% if release.status == 'in_progress' %} selected {% endif %}>En Proceso</option>
+                            <option value="delivered" {% if release.status == 'delivered' %} selected {% endif %}>Entregado</option>
                         </select>
                     </td>
-                    
                 </tr>
             {% endfor %}
         </tbody>
@@ -60,23 +59,23 @@
             $('.form-selector').change(function() {
                 // Get the selected option value
                 var selectedValue = $(this).val();
-    
+
                 // Get the ID of the select element
                 var releaseId = $(this).attr('id').split('-')[1]; // Extract release ID from the ID attribute
-    
+
                 // Select the select element by ID
                 var selectElement = $('#status-' + releaseId);
-    
+
                 // Remove previous color classes
                 selectElement.removeClass('bg-progress bg-success');
-    
+
                 // Add appropriate color class based on selected value
                 if (selectedValue === 'in_progress') {
                     selectElement.addClass('bg-progress');
                 } else if (selectedValue === 'delivered') {
                     selectElement.addClass('bg-success');
                 }
-    
+
                 // Update the status in the database
                 $.ajax({
                     url: '/update_status', // Change this to the route that updates the status
