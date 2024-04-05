@@ -2,7 +2,7 @@
 
 ## Igmhar Augusto Sanchez Canales 
 
-### Video Demo: 
+### Video Demo: <https://youtu.be/pM2l0K85PSE>
 
 ### General idea: Web Application Created for a Textile Fabric of Robes. Designed to make it easier for the staff to register an order called "Release". Also since sometimes the fabric works on large databases, making a web application for more friendly user interface is better. Plus search and save valuable information on an easier way is always valuable to save time in every industry. The information is easily save with a relational database using SQLite3. This project was created using Python, Flask, Jinja Templating, HTML, JavaScript and CSS.
 
