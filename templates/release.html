@@ -187,7 +187,7 @@
             $("#totalCantidad").text(totalCantidad);
             // Check if total cantidad matches total prendas
             var totalPrendas = parseInt($("#total_prendas").val()) || 0; // Get the value of total prendas, use 0 if NaN
-            if (totalCantidad !== totalPrendas) {
+            if (totalCantidad > totalPrendas) {
                 // Send alert message to backend
                 $.ajax({
                     type: "POST",
