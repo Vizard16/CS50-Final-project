@@ -28,7 +28,7 @@ The color_quantities table stores detailed records on the quantities of textiles
 Lastly the "users" table is used to register the users who have access to the system as well as their *hashed* passwords (which were created with a python function from the library *werkzeug.security*).
 
 Here is the diagram that explains how the tables are related as well as the attributes of each table:
-![relational_model]()
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/Database%20Overview.png)
 
 #### Templates
 
