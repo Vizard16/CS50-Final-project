@@ -237,7 +237,7 @@ def release():
 
        # Ensure all required fields are provided
         if not (fecha and planta_key and ciudad and municipio and estado and codigo_postal and telefono_contacto and nombre_contacto and prendas_solicitadas and cantidad and color and talla):
-            flash("All fields are required")
+            flash("Llene todos los datos requeridos")
             return redirect("/release")
         
     
