@@ -28,6 +28,7 @@ The color_quantities table stores detailed records on the quantities of textiles
 Lastly the "users" table is used to register the users who have access to the system as well as their *hashed* passwords (which were created with a python function from the library *werkzeug.security*).
 
 Here is the diagram that explains how the tables are related as well as the attributes of each table:
+![relational_model]()
 
 #### Templates
 
@@ -40,24 +41,24 @@ Then, I created the `/templates` folder inside my project. Which was composed of
 - `register.html`: The template is almost identical to `login.html`, only that it contains a form with 3 inputs: a username input, and two password inputs which means the input will be censored with "*" (one of them sets the password and the second one is used to confirm the password). If the passwords don't match **or** the username is already in existence, a *flash alert* is displayed. If the input is correct, it inserts the data into the database and immediately logs the user in. It is shown on the following image: 
 ![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/Register.png)
 - `index.html`: This template is the first that the user sees when they log in or register. It displays a *Welcome* message and a table of the most recent orders that have been registered. This table was created with Jinja Templating, using a loop that iterates through every element of a **SQL** query containing every study made throughout time. The table shows the ID of the release order, the plant's key, the data of the localization that will be shipped, Contact Phone, Name of the contact, the number of the ordered clothes, the date of the order, the status of the order and a button for deleting each order. The status its a dropdown menu which contains In Process status or Delivered, which it's changed here and changed on the database. This was made using JQuery methods on a JavaScript script inside the HTML file. The delete button sends a request by using AJAX to the flask app. This is what it looks like. 
-
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/Index.png)
 - `release.html`: The release template is the file used to POST a new release into the database. This was develop as a submit form as in any type of webpage. There are information previously said that needs to be POST each time an order is register. What makes it different is that it was develop using JQuery JavaScript to make a cloneable section so that the user can add more clothes to the order of different colors, sizes to whatever the user needs. Also it has a counter so that the user can see if the total matches the pre registered total amount of clothes they ordered. If it doesn't match I made using AJAX to send a POST to handle a flash that says that they don't match. All fields needs to be required in order to submit the form. And finally, a Submit Button that triggers the insertion into the database as long as the input data is correct. This what it looks like: 
-
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/Capture%20Release.png)
 - `colors.html`: This file is used as a GET method to see the part of the colors and sizes of the color_quantities **TABLE** which is used using a JINJA, using a loop that iterates through every element of the database. It also is accommodated in a table type so the user can see the release and associate with the index table and see the amount of clothes ordered by size and color easily. Here is how it looks like: 
-![relational_model]()
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/Colores.png)
 - `search_colors.html`: The search method is to having a text input on top of the page that whenever I put an ID on the input it will dynamically display a table just like in `colors.html` without the need of refreshing the page where it shows the ID and colors of the table or the information. This was done with ***JavaScript*** and a *** JSON *** format of data, the *innerHTML*.  
-![relational_model]()
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/SearchColors.png)
 - `search_date.html`: The search files all work quite in the same way. In this case, the template has a **date** input which dynamically displays a table just like in `index.html` without the need of refreshing the page. With some ***JavaScript*** and a *** JSON *** format of data, the *innerHTML* of the table's body is modified so that its value is updated depending on the user's input.
-![relational_model]()
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/SearchReleaseDate.png)
 - `search_name.html`: Similar to lasts templates, *`search_name.html`* has a text input which uses ***JavaScript*** and a *** JSON *** format of data, updates the contents of the table (modifying the innerHTML) according to what the user types in. It looks like this initially:
-![relational_model]()
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/SearchReleaseName2.png)
 Now if the user types **ANY letter**, as long as it is inside the name of any of the doctors, the data will change dynamically:
-![relational_model]()
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/SearchReleaseName.png)
 - `search_id.html`: This works like the `search_colors.html`, only instead of making a query on the color database it makes on the textile release database. It works with the same ***JavaScript*** and a *** JSON ***  method. It looks like this:
-![relational_model]()
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/SearchReleaseID.png)
 #### Design decisions
 The color design was focused only on what I think more of the identity of the company and since they say that the main color of robes they receive is gray I decided to make it gray but a gray getting close to blue to not look sad. I created a `/static` folder which contains the `styles.css` file and a `/favicon.ico` icon of the **Globe Logo** which since the company is named MUNDO TEXTIL and the translation of TEXTILE WORLD I put the following logo. 
-![relational_model]()
+![relational_model](https://github.com/Vizard16/CS50-Final-project/blob/master/screenshots/FaviconView.png)
 
 #### Backend Functionality
 The backend functionality is made using Flask in Python. The Python code is divided into two files:
